@@ -48,8 +48,8 @@ export default function App() {
           <Tabs />
         ) : (
           <Stack.Navigator defaultScreenOptions={LoginScreen} screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Signup" component={SignupScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
           </Stack.Navigator>
         )}
       </NavigationContainer>

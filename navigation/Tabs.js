@@ -5,7 +5,7 @@ import { auth } from 'config/firebase';
 // gui
 import { StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import colors from 'colors';
+import colors from 'utils/colors';
 
 // components
 import ChatScreen from 'screens/ChatScreen';
