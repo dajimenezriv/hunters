@@ -10,7 +10,7 @@ export default function NewPostScreen({ navigation }) {
   const dispatch = useDispatch();
   const [post, setPost] = useState({
     description: 'Hola',
-    image: null,
+    imageUri: null,
   });
 
   return (

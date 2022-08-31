@@ -63,13 +63,13 @@ export default function Tabs() {
         }
       }}
     >
-      <Tab.Screen name="Chat" component={ChatScreen} options={{
-        tabBarIcon: () => tabBarIcon(chatImage),
+      <Tab.Screen name="Feed" component={FeedScreen} options={{
+        tabBarIcon: () => tabBarIcon(feedImage),
         headerRight: () => headerRight(),
       }} />
 
-      <Tab.Screen name="Feed" component={FeedScreen} options={{
-        tabBarIcon: () => tabBarIcon(feedImage),
+      <Tab.Screen name="Chat" component={ChatScreen} options={{
+        tabBarIcon: () => tabBarIcon(chatImage),
         headerRight: () => headerRight(),
       }} />
 

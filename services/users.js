@@ -18,7 +18,7 @@ export const signUp = async (email, password, username) => {
   if (email !== '' && password !== '') {
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
-      await setDoc(doc(collection(database, 'userDetails'), user.uid), { username, avatar: defaultProfileUri })
+      await setDoc(doc(collection(database, 'userDetails'), user.uid), { username, avatarUri: defaultProfileUri })
     } catch (err) {
       Alert.alert('Signup error', err.message);
     }

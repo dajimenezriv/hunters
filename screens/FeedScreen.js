@@ -5,10 +5,11 @@ import * as postsReducer from 'reducers/posts';
 
 // gui
 import { View, FlatList, SafeAreaView } from 'react-native';
+import colors from 'utils/colors';
 
 // components
-import TextFeed from 'components/TextFeed';
-import ImageFeed from 'components/ImageFeed';
+import TextFeed from 'components/feed/TextFeed';
+import ImageFeed from 'components/feed/ImageFeed';
 
 export default function FeedScreen() {
   const dispatch = useDispatch();
@@ -26,15 +27,16 @@ export default function FeedScreen() {
         }}
         data={posts}
         keyExtractor={(item) => item.id}
+        contentContainerStyle={{ paddingBottom: 100 }}
         ItemSeparatorComponent={() => (
           <View style={{
-            backgroundColor: '#d9d9d9',
+            backgroundColor: colors.darkWhite,
             marginHorizontal: 10,
             height: 1,
           }} />
         )}
         renderItem={({ item }) => {
-          if (item.image) return <ImageFeed item={item} />
+          if (item.imageUri) return <ImageFeed item={item} />
           return <TextFeed item={item} />
         }}
       />

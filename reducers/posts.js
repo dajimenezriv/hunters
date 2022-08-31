@@ -4,6 +4,9 @@ import * as postsService from 'services/posts';
 import * as usersService from 'services/users';
 import { auth } from 'config/firebase';
 
+// gui
+import { Alert } from 'react-native';
+
 const slice = createSlice({
   name: 'posts',
   initialState: { posts: [] },
@@ -23,7 +26,7 @@ export const getAll = () => async (dispatch) => {
     const res = await postsService.getAll();
     dispatch(setPosts(res));
   } catch (err) {
-    console.log(err);
+    Alert.alert('postsReducer.getAll', err.message);
   }
 };
 
@@ -36,7 +39,7 @@ export const add = (post) => async (dispatch) => {
       userId: user.id,
       user: {
         username: user.username,
-        avatar: user.avatar,
+        avatarUri: user.avatarUri,
       },
       likes: [],
       comments: [],
@@ -44,6 +47,6 @@ export const add = (post) => async (dispatch) => {
     await postsService.add(newPost);
     dispatch(getAll());
   } catch (err) {
-    console.log(err);
+    Alert.alert('postsReducer.add', err.message);
   }
 };

@@ -20,10 +20,10 @@ export const createPosts = async (dispatch) => {
     userId: dajimenezrivId,
     user: {
       username: dajimenezriv.username,
-      avatar: dajimenezriv.avatar,
+      avatarUri: dajimenezriv.avatarUri,
     },
     description: 'Something.',
-    image: null,
+    imageUri: null,
     createdAt: new Date(),
     likes: [javierId],
     comments: [],
@@ -33,12 +33,12 @@ export const createPosts = async (dispatch) => {
     userId: martaId,
     user: {
       username: marta.username,
-      avatar: marta.avatar,
+      avatarUri: marta.avatarUri,
     },
     description: 'Second.',
-    image: stagUrl,
+    imageUri: stagUrl,
     createdAt: new Date(),
-    likes: [martaId, dajimenezrivId],
+    likes: [martaId],
     comments: [],
   });
 
@@ -46,13 +46,13 @@ export const createPosts = async (dispatch) => {
     userId: javierId,
     user: {
       username: javier.username,
-      avatar: javier.avatar,
+      avatarUri: javier.avatarUri,
     },
     // eslint-disable-next-line
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam semper tincidunt sapien, quis pulvinar risus faucibus ac. Integer tempus lorem a tellus lobortis pellentesque. Nullam leo massa, consequat ut elementum vel, varius vitae neque. Pellentesque at viverra purus. Aliquam at imperdiet diam. Fusce eu mi pharetra, vehicula eros vel, bibendum nisi. Sed facilisis mauris eget porta fringilla. Donec gravida suscipit quam sed tempus. Etiam eget risus eu lacus feugiat porta. In hac habitasse platea dictumst. Maecenas pellentesque eros vel eros pharetra, non dignissim felis bibendum.',
-    image: null,
+    imageUri: null,
     createdAt: new Date(),
-    likes: [martaId, dajimenezrivId],
+    likes: [martaId],
     comments: [],
   });
 
@@ -60,12 +60,12 @@ export const createPosts = async (dispatch) => {
     userId: martaId,
     user: {
       username: marta.username,
-      avatar: marta.avatar,
+      avatarUri: marta.avatarUri,
     },
     description: 'Second.',
-    image: stag2Url,
+    imageUri: stag2Url,
     createdAt: new Date(),
-    likes: [martaId, dajimenezrivId],
+    likes: [javierId, dajimenezrivId],
     comments: [],
   });
 
@@ -73,12 +73,12 @@ export const createPosts = async (dispatch) => {
     userId: martaId,
     user: {
       username: marta.username,
-      avatar: marta.avatar,
+      avatarUri: marta.avatarUri,
     },
     description: 'Second.',
-    image: null,
+    imageUri: null,
     createdAt: new Date(),
-    likes: [martaId, dajimenezrivId],
+    likes: [javierId],
     comments: [],
   });
 
@@ -86,12 +86,12 @@ export const createPosts = async (dispatch) => {
     userId: martaId,
     user: {
       username: marta.username,
-      avatar: marta.avatar,
+      avatarUri: marta.avatarUri,
     },
     description: 'Second.',
-    image: stag2Url,
+    imageUri: stag2Url,
     createdAt: new Date(),
-    likes: [martaId, dajimenezrivId],
+    likes: [dajimenezrivId],
     comments: [],
   });
 
@@ -99,13 +99,13 @@ export const createPosts = async (dispatch) => {
     userId: dajimenezrivId,
     user: {
       username: dajimenezriv.username,
-      avatar: dajimenezriv.avatar,
+      avatarUri: dajimenezriv.avatarUri,
     },
     // eslint-disable-next-line
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam semper tincidunt sapien, quis pulvinar risus faucibus ac. Integer tempus lorem a tellus lobortis pellentesque. Nullam leo massa, consequat ut elementum vel, varius vitae neque. Pellentesque at viverra purus. Aliquam at imperdiet diam. Fusce eu mi pharetra, vehicula eros vel, bibendum nisi. Sed facilisis mauris eget porta fringilla. Donec gravida suscipit quam sed tempus. Etiam eget risus eu lacus feugiat porta. In hac habitasse platea dictumst. Maecenas pellentesque eros vel eros pharetra, non dignissim felis bibendum.',
-    image: stagUrl,
+    imageUri: stagUrl,
     createdAt: new Date(),
-    likes: [martaId, dajimenezrivId],
+    likes: [martaId, javierId],
     comments: [],
   });
 
@@ -113,12 +113,12 @@ export const createPosts = async (dispatch) => {
     userId: javierId,
     user: {
       username: javier.username,
-      avatar: javier.avatar,
+      avatarUri: javier.avatarUri,
     },
     description: 'Second.',
-    image: null,
+    imageUri: null,
     createdAt: new Date(),
-    likes: [martaId, dajimenezrivId],
+    likes: [javierId, dajimenezrivId],
     comments: [],
   });
 
