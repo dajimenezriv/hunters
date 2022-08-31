@@ -1,57 +1,75 @@
 // logic
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import * as postsReducer from 'reducers/posts';
 
 // gui
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import colors from 'utils/colors';
 
 // images
 const likesImage = require('assets/likes.png');
 const conversationImage = require('assets/conversation.png');
 
-export default function Actions({ item }) {
+export default function Actions({ post }) {
+  const dispatch = useDispatch();
+
   return (
     <View style={{
-      marginTop: 10,
+      marginTop: 8,
       flexDirection: 'row',
       alignItems: 'center',
     }}>
 
       {/* LIKES */}
 
-      <Image style={{
-        width: 25,
-        height: 25,
-        borderRadius: 100,
-      }} source={likesImage} />
+      <TouchableOpacity
+        onPress={() => dispatch(postsReducer.like(post))}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <Image style={{
+          width: 25,
+          height: 25,
+          borderRadius: 100,
+        }} source={likesImage} />
 
-      <Text style={{
-        color: colors.pink,
-        fontWeight: 'bold',
-        marginLeft: 3,
-        marginRight: 25,
-      }}>{item.likes.length}</Text>
+        <Text style={{
+          color: colors.pink,
+          fontWeight: 'bold',
+          marginLeft: 5,
+        }}>{post.likes.length} me gusta</Text>
+      </TouchableOpacity>
 
       {/* REPLIES */}
 
-      <Image style={{
-        width: 25,
-        height: 25,
-        borderRadius: 100,
-      }} source={conversationImage} />
+      <TouchableOpacity
+        onPress={() => null}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginLeft: 30,
+        }}>
+        <Image style={{
+          width: 25,
+          height: 25,
+          borderRadius: 100,
+        }} source={conversationImage} />
 
-      <Text style={{
-        color: colors.darkGray,
-        fontWeight: 'bold',
-        marginLeft: 3,
-        marginRight: 25,
-      }}>{item.comments.length}</Text>
+        <Text style={{
+          color: colors.darkGray,
+          fontWeight: 'bold',
+          marginLeft: 5,
+          marginRight: 25,
+        }}>{post.comments.length} comentarios</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 Actions.propTypes = {
-  item: PropTypes.shape({
+  post: PropTypes.shape({
     user: PropTypes.shape({
       avatarUri: PropTypes.string,
       username: PropTypes.string,

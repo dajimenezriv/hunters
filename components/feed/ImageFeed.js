@@ -7,8 +7,8 @@ import { View, Text, Image } from 'react-native';
 // components
 import Actions from './Actions';
 
-export default function ImageFeed({ item }) {
-  let { description } = item;
+export default function ImageFeed({ post }) {
+  let { description } = post;
   if (description.length > 53) description = `${description.substring(0, 50)}...`;
 
   return (
@@ -22,7 +22,7 @@ export default function ImageFeed({ item }) {
         flexDirection: 'row',
         alignItems: 'center',
       }}>
-        <Image source={{ uri: item.user.avatarUri }} style={{
+        <Image source={{ uri: post.user.avatarUri }} style={{
           marginRight: 10,
           width: 40,
           height: 40,
@@ -32,12 +32,12 @@ export default function ImageFeed({ item }) {
         }} />
         <Text style={{
           fontWeight: 'bold',
-        }}>{item.user.username}</Text>
+        }}>{post.user.username}</Text>
       </View>
 
       {/* IMAGE */}
 
-      <Image source={{ uri: item.imageUri }} style={{
+      <Image source={{ uri: post.imageUri }} style={{
         flex: 1,
         width: 400,
         height: 500,
@@ -45,16 +45,25 @@ export default function ImageFeed({ item }) {
       <View style={{
         padding: 10,
       }}>
-        <Text>{description}</Text>
+        {/* CHANGEEEEEEEEEEEEEEEEEEEEE */}
+        <View style={{
+          flexDirection: 'row',
+          width: '100%',
+        }}>
+          <Text style={{
+            fontWeight: 'bold',
+          }}>{post.user.username}</Text>
+          <Text> {description}</Text>
+        </View>
 
-        <Actions item={item} />
+        <Actions post={post} />
       </View>
     </View>
   )
 }
 
 ImageFeed.propTypes = {
-  item: PropTypes.shape({
+  post: PropTypes.shape({
     user: PropTypes.shape({
       avatarUri: PropTypes.string,
       username: PropTypes.string,

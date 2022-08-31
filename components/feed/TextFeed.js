@@ -7,8 +7,8 @@ import { View, Text, Image } from 'react-native';
 // components
 import Actions from './Actions';
 
-export default function TextFeed({ item }) {
-  let { description } = item;
+export default function TextFeed({ post }) {
+  let { description } = post;
   if (description.length > 258) description = `${description.substring(0, 255)}...`;
 
   return (
@@ -16,7 +16,7 @@ export default function TextFeed({ item }) {
       padding: 10,
       flexDirection: 'row',
     }}>
-      <Image source={{ uri: item.user.avatarUri }} style={{
+      <Image source={{ uri: post.user.avatarUri }} style={{
         marginRight: 10,
         width: 40,
         height: 40,
@@ -27,20 +27,20 @@ export default function TextFeed({ item }) {
       <View>
         <Text style={{
           fontWeight: 'bold',
-        }}>{item.user.username}</Text>
+        }}>{post.user.username}</Text>
 
         <Text style={{
           marginRight: 55,
         }}>{description}</Text>
 
-        <Actions item={item} />
+        <Actions post={post} />
       </View>
     </View>
   )
 }
 
 TextFeed.propTypes = {
-  item: PropTypes.shape({
+  post: PropTypes.shape({
     user: PropTypes.shape({
       avatarUri: PropTypes.string,
       username: PropTypes.string,

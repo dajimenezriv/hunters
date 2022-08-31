@@ -15,10 +15,18 @@ const slice = createSlice({
       const posts = payload;
       return { ...state, posts };
     },
+    setPost(state, { payload }) {
+      const { posts } = state;
+      const newPost = payload;
+      return {
+        ...state,
+        posts: posts.map((post) => (post.id === newPost.id) ? newPost : post),
+      }
+    }
   },
 });
 
-export const { setPosts } = slice.actions;
+export const { setPosts, setPost } = slice.actions;
 export default slice.reducer;
 
 export const getAll = () => async (dispatch) => {
@@ -50,3 +58,23 @@ export const add = (post) => async (dispatch) => {
     Alert.alert('postsReducer.add', err.message);
   }
 };
+
+export const like = (post) => async (dispatch) => {
+  try {
+    let likes = [];
+    const userId = auth.currentUser.uid;
+    const idx = post.likes.indexOf(userId);
+
+    if (idx === -1) likes = [...post.likes, userId];
+    else likes = post.likes.filter((uid) => uid !== userId);
+
+    dispatch(setPost({
+      ...post,
+      likes,
+    }));
+
+    await postsService.like(post.id, likes);
+  } catch (err) {
+    Alert.alert('postsRecucer.like', err.message);
+  }
+}

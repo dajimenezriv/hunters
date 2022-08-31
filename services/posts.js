@@ -1,5 +1,5 @@
 // logic
-import { collection, orderBy, query, getDocs, doc, getDoc, addDoc, deleteDoc } from 'firebase/firestore';
+import { collection, orderBy, query, getDocs, doc, getDoc, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { database } from 'config/firebase';
 
 // gui
@@ -24,6 +24,11 @@ export const getById = async (id) => {
 }
 
 export const add = async (post) => addDoc(collection(database, 'posts'), post);
+
+export const like = async (id, likes) => {
+  const docRef = doc(database, 'posts', id);
+  await updateDoc(docRef, { likes });
+};
 
 export async function deleteAll() {
   try {

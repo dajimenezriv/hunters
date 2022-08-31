@@ -26,7 +26,7 @@ export default function FeedScreen() {
           backgroundColor: '#fff',
         }}
         data={posts}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(post) => post.id}
         contentContainerStyle={{ paddingBottom: 100 }}
         ItemSeparatorComponent={() => (
           <View style={{
@@ -36,8 +36,8 @@ export default function FeedScreen() {
           }} />
         )}
         renderItem={({ item }) => {
-          if (item.imageUri) return <ImageFeed item={item} />
-          return <TextFeed item={item} />
+          if (item.imageUri) return <ImageFeed post={item} />
+          return <TextFeed post={item} />
         }}
       />
     </SafeAreaView>
