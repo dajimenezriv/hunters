@@ -6,8 +6,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fire
 // gui
 import { Alert } from 'react-native';
 
-// eslint-disable-next-line
-const defaultProfileUri = 'https://firebasestorage.googleapis.com/v0/b/hunters-66bec.appspot.com/o/profile.png?alt=media&token=19b00937-cd8e-4d6d-9cf3-825fa51cf235';
+const defaultProfileUri = 'https://firebasestorage.googleapis.com/v0/b/hunters-66bec.appspot.com/o/profile.png?alt=media&token=19b00937-cd8e-4d6d-9cf3-825fa51cf235'; // eslint-disable-line
 
 export const getById = async (id) => {
   const docRef = doc(database, 'userDetails', id);

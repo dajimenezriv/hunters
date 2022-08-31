@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as postsReducer from 'reducers/posts';
 
 // gui
-import { View, FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { View, FlatList, SafeAreaView } from 'react-native';
 
 // components
 import TextFeed from 'components/TextFeed';
@@ -21,10 +21,18 @@ export default function FeedScreen() {
   return (
     <SafeAreaView>
       <FlatList
-        style={styles.flatList}
+        style={{
+          backgroundColor: '#fff',
+        }}
         data={posts}
         keyExtractor={(item) => item.id}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        ItemSeparatorComponent={() => (
+          <View style={{
+            backgroundColor: '#d9d9d9',
+            marginHorizontal: 10,
+            height: 1,
+          }} />
+        )}
         renderItem={({ item }) => {
           if (item.image) return <ImageFeed item={item} />
           return <TextFeed item={item} />
@@ -33,14 +41,3 @@ export default function FeedScreen() {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  flatList: {
-    backgroundColor: '#fff',
-  },
-  separator: {
-    backgroundColor: '#d9d9d9',
-    marginHorizontal: 10,
-    height: 1,
-  }
-});

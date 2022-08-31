@@ -9,7 +9,7 @@ export const getAll = async () => {
   const res = [];
   const q = query(collection(database, 'posts'), orderBy('createdAt', 'desc'));
   const snapshot = await getDocs(q);
-  await snapshot.forEach(async (d) => {
+  snapshot.forEach((d) => {
     const data = d.data();
     delete data.createdAt; // it's not serializble
     res.push({ id: d.id, ...data, })
@@ -25,13 +25,15 @@ export const getById = async (id) => {
 
 export const add = async (post) => addDoc(collection(database, 'posts'), post);
 
-// not working
-export const deleteAll = async () => {
-  const q = query(collection(database, 'posts'));
-  const snapshot = await getDocs(q);
+export async function deleteAll() {
   try {
-    snapshot.forEach((d) => deleteDoc(d));
+    const q = query(collection(database, 'posts'));
+    const snapshot = await getDocs(q);
+    // const batch = writeBatch(batch);
+    // snapshot.forEach((d) => batch.delete(d.ref));
+    snapshot.forEach((d) => deleteDoc(d.ref));
+    // await batch.commit();
   } catch (err) {
-    Alert.alert('Post error', err.message);
+    Alert.alert('deleteAll', err.message);
   }
-};
+}
