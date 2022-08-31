@@ -1,5 +1,9 @@
+// logic
 import { collection, orderBy, query, getDocs, doc, getDoc, addDoc, deleteDoc } from 'firebase/firestore';
 import { database } from 'config/firebase';
+
+// gui
+import { Alert } from 'react-native';
 
 export const getAll = async () => {
   const res = [];
@@ -7,7 +11,7 @@ export const getAll = async () => {
   const snapshot = await getDocs(q);
   await snapshot.forEach(async (d) => {
     const data = d.data();
-    delete data.createdAt
+    delete data.createdAt; // it's not serializble
     res.push({ id: d.id, ...data, })
   });
   return res;
@@ -28,6 +32,6 @@ export const deleteAll = async () => {
   try {
     snapshot.forEach((d) => deleteDoc(d));
   } catch (err) {
-    console.log(err);
+    Alert.alert('Post error', err.message);
   }
 };

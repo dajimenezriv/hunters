@@ -84,7 +84,7 @@ export default function SignupScreen({ navigation }) {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={() => usersService.signup(email, password, username)}
+          onPress={() => usersService.signUp(email, password, username)}
         >
           <Text style={{
             fontWeight: 'bold',

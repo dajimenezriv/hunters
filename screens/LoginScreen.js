@@ -74,7 +74,7 @@ export default function LoginScreen({ navigation }) {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={() => usersService.login(email, password)}
+          onPress={() => usersService.logIn(email, password)}
         >
           <Text style={{
             fontWeight: 'bold',

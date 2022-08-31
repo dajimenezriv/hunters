@@ -15,7 +15,7 @@ export const getById = async (id) => {
   return { id: snapshot.id, ...snapshot.data() };
 }
 
-export const signup = async (email, password, username) => {
+export const signUp = async (email, password, username) => {
   if (email !== '' && password !== '') {
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
@@ -26,7 +26,7 @@ export const signup = async (email, password, username) => {
   }
 };
 
-export const login = async (email, password) => {
+export const logIn = async (email, password) => {
   if (email !== '' && password !== '') {
     try {
       await signInWithEmailAndPassword(auth, email, password)
@@ -35,3 +35,11 @@ export const login = async (email, password) => {
     }
   }
 };
+
+export const signOut = async () => {
+  try {
+    auth.signOut();
+  } catch (err) {
+    Alert.alert('Signout error', err.message);
+  }
+}
