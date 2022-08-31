@@ -13,6 +13,7 @@ import FeedScreen from 'screens/FeedScreen';
 import NewPostScreen from 'screens/NewPostScreen';
 import MapScreen from 'screens/MapScreen';
 import ProfileScreen from 'screens/ProfileScreen';
+import UserScreen from 'screens/UserScreen';
 
 // images
 const chatImage = require('assets/chat.jpg');
@@ -86,6 +87,10 @@ export default function Tabs() {
       <Tab.Screen name="Profile" component={ProfileScreen} options={{
         tabBarIcon: () => tabBarIcon(profileImage),
         headerRight: () => headerRight(),
+      }} />
+
+      <Tab.Screen name="User" component={UserScreen} options={{
+        tabBarButton: () => null,
       }} />
     </Tab.Navigator>
   );

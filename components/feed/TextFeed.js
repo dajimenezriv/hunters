@@ -1,13 +1,17 @@
 // logic
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
+import { auth } from 'config/firebase';
 
 // gui
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 
 // components
 import Actions from './Actions';
 
 export default function TextFeed({ post }) {
+  const navigation = useNavigation();
+
   let { description } = post;
   if (description.length > 258) description = `${description.substring(0, 255)}...`;
 
@@ -16,14 +20,19 @@ export default function TextFeed({ post }) {
       padding: 10,
       flexDirection: 'row',
     }}>
-      <Image source={{ uri: post.user.avatarUri }} style={{
-        marginRight: 10,
-        width: 40,
-        height: 40,
-        borderRadius: 10,
-        borderWidth: 0.5,
-        borderColor: '#dfdfdf',
-      }} />
+      <TouchableOpacity onPress={() => {
+        if (auth.currentUser.uid === post.userId) navigation.navigate('Profile');
+        else navigation.navigate('User', { userId: post.userId })
+      }}>
+        <Image source={{ uri: post.user.avatarUri }} style={{
+          marginRight: 10,
+          width: 40,
+          height: 40,
+          borderRadius: 10,
+          borderWidth: 0.5,
+          borderColor: '#dfdfdf',
+        }} />
+      </TouchableOpacity>
       <View>
         <Text style={{
           fontWeight: 'bold',
@@ -45,6 +54,8 @@ TextFeed.propTypes = {
       avatarUri: PropTypes.string,
       username: PropTypes.string,
     }),
+    userId: PropTypes.string,
+    imageUri: PropTypes.string,
     description: PropTypes.string,
     likes: PropTypes.arrayOf(PropTypes.string),
     comments: PropTypes.arrayOf(PropTypes.any), // eslint-disable-line

@@ -27,8 +27,8 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const subscriber = auth.onAuthStateChanged((user) => {
-      setUser(user);
+    const subscriber = auth.onAuthStateChanged((authUser) => {
+      setUser(authUser);
       setLoading(false);
     });
 

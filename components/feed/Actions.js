@@ -74,6 +74,8 @@ Actions.propTypes = {
       avatarUri: PropTypes.string,
       username: PropTypes.string,
     }),
+    userId: PropTypes.string,
+    imageUri: PropTypes.string,
     description: PropTypes.string,
     likes: PropTypes.arrayOf(PropTypes.string),
     comments: PropTypes.arrayOf(PropTypes.any), // eslint-disable-line
