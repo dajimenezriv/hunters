@@ -21,8 +21,8 @@ export default function TextFeed({ post }) {
       flexDirection: 'row',
     }}>
       <TouchableOpacity onPress={() => {
-        if (auth.currentUser.uid === post.userId) navigation.navigate('Profile');
-        else navigation.navigate('User', { userId: post.userId })
+        if (auth.currentUser.uid === post.user.userId) navigation.navigate('Profile');
+        else navigation.navigate('User', { userId: post.user.userId })
       }}>
         <Image source={{ uri: post.user.avatarUri }} style={{
           marginRight: 10,
@@ -51,10 +51,10 @@ export default function TextFeed({ post }) {
 TextFeed.propTypes = {
   post: PropTypes.shape({
     user: PropTypes.shape({
+      userId: PropTypes.string,
       avatarUri: PropTypes.string,
       username: PropTypes.string,
     }),
-    userId: PropTypes.string,
     imageUri: PropTypes.string,
     description: PropTypes.string,
     likes: PropTypes.arrayOf(PropTypes.string),

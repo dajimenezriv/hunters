@@ -23,7 +23,7 @@ export default function FeedScreen() {
     <SafeAreaView>
       <FlatList
         style={{
-          backgroundColor: '#fff',
+          backgroundColor: 'white',
         }}
         data={posts}
         keyExtractor={(post) => post.id}

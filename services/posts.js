@@ -30,7 +30,7 @@ export const like = async (id, likes) => {
   await updateDoc(docRef, { likes });
 };
 
-export async function deleteAll() {
+export const deleteAll = async () => {
   try {
     const q = query(collection(database, 'posts'));
     const snapshot = await getDocs(q);

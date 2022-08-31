@@ -71,10 +71,10 @@ export default function Actions({ post }) {
 Actions.propTypes = {
   post: PropTypes.shape({
     user: PropTypes.shape({
+      userId: PropTypes.string,
       avatarUri: PropTypes.string,
       username: PropTypes.string,
     }),
-    userId: PropTypes.string,
     imageUri: PropTypes.string,
     description: PropTypes.string,
     likes: PropTypes.arrayOf(PropTypes.string),
