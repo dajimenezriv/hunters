@@ -88,6 +88,7 @@ export const getChats = () => async (dispatch, getState) => {
 };
 
 export const getMessages = (toUserId) => async (dispatch, getState) => {
+  dispatch(setRefreshing(true));
   try {
     const { user: fromUser } = getState().user;
     const messages = await usersService.getMessages(fromUser.id, toUserId);
@@ -95,6 +96,7 @@ export const getMessages = (toUserId) => async (dispatch, getState) => {
   } catch (err) {
     Alert.alert('userReducer.getMessages', err.message);
   }
+  dispatch(setRefreshing(false));
 };
 
 export const sendMessage = (toUser, message) => async (dispatch, getState) => {

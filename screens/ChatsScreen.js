@@ -23,6 +23,7 @@ export default function ChatsScreen({ navigation }) {
       <FlatList
         style={{
           backgroundColor: 'white',
+          height: '100%',
         }}
         data={chats}
         keyExtractor={(chat) => chat.id}

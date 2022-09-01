@@ -12,7 +12,7 @@ import { View } from 'react-native';
 export default function ChatScreen({ route }) {
   const dispatch = useDispatch();
   const { toUser } = route.params;
-  const { messages } = useSelector((state) => state.user);
+  const { refreshing, messages } = useSelector((state) => state.user);
 
   const refresh = () => {
     dispatch(userReducer.getMessages(toUser.id));
@@ -24,11 +24,13 @@ export default function ChatScreen({ route }) {
     dispatch(userReducer.sendMessage(toUser, message));
   }, []);
 
+  if (refreshing) return <View style={{ flex: 1, backgroundColor: 'white' }} />;
+
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
       }}
     >
       <GiftedChat
