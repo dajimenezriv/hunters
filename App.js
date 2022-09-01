@@ -7,10 +7,11 @@
 // logic
 import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { auth } from 'config/firebase';
-import store from 'store';
+import store, { persistor } from 'store';
 
 // gui
 import { View, ActivityIndicator } from 'react-native';
@@ -43,16 +44,18 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        {(user) ? (
-          <Tabs />
-        ) : (
-          <Stack.Navigator defaultScreenOptions={LoginScreen} screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
-          </Stack.Navigator>
-        )}
-      </NavigationContainer>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          {(user) ? (
+            <Tabs />
+          ) : (
+            <Stack.Navigator defaultScreenOptions={LoginScreen} screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Signup" component={SignupScreen} />
+            </Stack.Navigator>
+          )}
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }
