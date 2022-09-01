@@ -1,5 +1,5 @@
 // logic
-import { collection, orderBy, query, getDocs, doc, getDoc, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { collection, orderBy, query, getDocs, doc, getDoc, addDoc, deleteDoc, updateDoc, limit } from 'firebase/firestore';
 import { database } from 'config/firebase';
 
 // gui
@@ -8,7 +8,8 @@ import { Alert } from 'react-native';
 export const getAll = async () => {
   try {
     const res = [];
-    const q = query(collection(database, 'posts'), orderBy('createdAt', 'desc'));
+    // remove limit
+    const q = query(collection(database, 'posts'), orderBy('createdAt', 'desc'), limit(20));
     const snapshot = await getDocs(q);
     snapshot.forEach((d) => {
       const data = d.data();
@@ -32,6 +33,10 @@ export const getById = async (id) => {
     return null;
   }
 }
+
+export const getByLocation = async () => {
+
+};
 
 export const add = async (post) => {
   try {

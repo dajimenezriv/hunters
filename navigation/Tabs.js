@@ -86,6 +86,7 @@ export default function Tabs() {
 
       <Tab.Screen name="Map" component={MapScreen} options={{
         tabBarIcon: () => tabBarIcon(mapImage),
+        tabBarStyle: { display: 'none' },
         headerRight: () => headerRight(),
       }} />
 
