@@ -1,6 +1,7 @@
 // logic
+import { useDispatch } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as usersService from 'services/users';
+import * as userReducer from 'reducers/user';
 
 // gui
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
@@ -8,12 +9,13 @@ import { AntDesign } from '@expo/vector-icons';
 import colors from 'utils/colors';
 
 // components
-import ChatScreen from 'screens/ChatScreen';
+import ChatsScreen from 'screens/ChatsScreen';
 import FeedScreen from 'screens/FeedScreen';
 import NewPostScreen from 'screens/NewPostScreen';
 import MapScreen from 'screens/MapScreen';
 import ProfileScreen from 'screens/ProfileScreen';
 import UserScreen from 'screens/UserScreen';
+import ChatScreen from 'screens/ChatScreen';
 
 // images
 const chatImage = require('assets/chat.jpg');
@@ -24,23 +26,25 @@ const profileImage = require('assets/profile.png');
 
 const Tab = createBottomTabNavigator();
 
-function tabBarIcon(image) {
-  return (
-    <View style={styles.imageContainer}>
-      <Image source={image} resizeMode="contain" style={styles.image} />
-    </View>
-  );
-}
-
-function headerRight() {
-  return (
-    <TouchableOpacity onPress={() => usersService.signOut()} style={{ marginRight: 10 }}>
-      <AntDesign name="logout" size={24} color={colors.gray} style={{ marginRight: 10 }} />
-    </TouchableOpacity>
-  )
-}
-
 export default function Tabs() {
+  const dispatch = useDispatch();
+
+  function tabBarIcon(image) {
+    return (
+      <View style={styles.imageContainer}>
+        <Image source={image} resizeMode="contain" style={styles.image} />
+      </View>
+    );
+  }
+
+  function headerRight() {
+    return (
+      <TouchableOpacity onPress={() => dispatch(userReducer.signOut())} style={{ marginRight: 10 }}>
+        <AntDesign name="logout" size={24} color={colors.gray} style={{ marginRight: 10 }} />
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -69,8 +73,9 @@ export default function Tabs() {
         headerRight: () => headerRight(),
       }} />
 
-      <Tab.Screen name="Chat" component={ChatScreen} options={{
+      <Tab.Screen name="Chats" component={ChatsScreen} options={{
         tabBarIcon: () => tabBarIcon(chatImage),
+        tabBarStyle: { display: 'none' },
         headerRight: () => headerRight(),
       }} />
 
@@ -91,6 +96,11 @@ export default function Tabs() {
 
       <Tab.Screen name="User" component={UserScreen} options={{
         tabBarButton: () => null,
+      }} />
+
+      <Tab.Screen name="Chat" component={ChatScreen} options={{
+        tabBarButton: () => null,
+        tabBarStyle: { display: 'none' },
       }} />
     </Tab.Navigator>
   );

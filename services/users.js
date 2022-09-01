@@ -1,44 +1,88 @@
 // logic
 import { auth, database } from 'config/firebase';
-import { getDoc, setDoc, doc, collection } from 'firebase/firestore';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getDoc, setDoc, doc, collection, query, getDocs, deleteDoc, addDoc, orderBy } from 'firebase/firestore';
 
 // gui
 import { Alert } from 'react-native';
 
-const defaultProfileUri = 'https://firebasestorage.googleapis.com/v0/b/hunters-66bec.appspot.com/o/profile.png?alt=media&token=19b00937-cd8e-4d6d-9cf3-825fa51cf235'; // eslint-disable-line
-
 export const getById = async (id) => {
-  const docRef = doc(database, 'userDetails', id);
-  const snapshot = await getDoc(docRef);
-  return { id: snapshot.id, ...snapshot.data() };
+  try {
+    const docRef = doc(database, 'users', id);
+    const snapshot = await getDoc(docRef);
+    return { id: snapshot.id, ...snapshot.data() };
+  } catch (err) {
+    Alert.alert('usersService.getById', err.message);
+    return null;
+  }
 }
 
-export const signUp = async (email, password, username) => {
-  if (email !== '' && password !== '') {
-    try {
-      const { user } = await createUserWithEmailAndPassword(auth, email, password);
-      await setDoc(doc(collection(database, 'userDetails'), user.uid), { username, avatarUri: defaultProfileUri })
-    } catch (err) {
-      Alert.alert('Signup error', err.message);
-    }
-  }
-};
-
-export const logIn = async (email, password) => {
-  if (email !== '' && password !== '') {
-    try {
-      await signInWithEmailAndPassword(auth, email, password)
-    } catch (err) {
-      Alert.alert('Login error', err.message);
-    }
-  }
-};
-
-export const signOut = async () => {
+export const add = async (id, user) => {
   try {
-    auth.signOut();
+    await setDoc(doc(collection(database, 'users'), id), user);
   } catch (err) {
-    Alert.alert('Signout error', err.message);
+    Alert.alert('usersService.add', err.message);
+  }
+};
+
+export const getChats = async (fromUserId) => {
+  try {
+    const res = [];
+    const q = query(collection(database, 'users', fromUserId, 'chats'), orderBy('lastMessageAt', 'desc'));
+    const snapshot = await getDocs(q);
+    snapshot.forEach((d) => { res.push({ id: d.id, ...d.data(), })});
+    return res;
+  } catch (err) {
+    Alert.alert('usersService.getChats', err.message);
+    return [];
+  }
+};
+
+export const getMessages = async (fromUserId, toUserId) => {
+  try {
+    const res = [];
+    const q = query(collection(database, 'users', fromUserId, 'chats', toUserId, 'messages'), orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    snapshot.forEach((d) => { res.push({ id: d.id, ...d.data(), })});
+    return res;
+  } catch (err) {
+    Alert.alert('usersService.getMessages', err.message);
+    return [];
+  }
+};
+
+export const sendMessage = async (fromUserId, toUser, message) => {
+  try {
+    // update chat info
+    const docRef = doc(collection(database, 'users', fromUserId, 'chats'), toUser.id);
+    const toUserObj = { username: toUser.username, avatarUri: toUser.avatarUri, lastMessageAt: new Date().toISOString() };
+    await setDoc(docRef, toUserObj);
+
+    // add message
+    const collectionRef = collection(database, 'users', fromUserId, 'chats', toUser.id, 'messages');
+    await addDoc(collectionRef, message);
+  } catch (err) {
+    Alert.alert('usersService.sendMessage', err.message);
+  }
+}
+
+export const deleteAllMessages = async (toUserId) => {
+  try {
+    const fromUserId = auth.currentUser.uid;
+    const q = query(collection(database, 'users', fromUserId, 'chats', toUserId, 'messages'));
+    const snapshot = await getDocs(q);
+    snapshot.forEach((d) => deleteDoc(d.ref));
+  } catch (err) {
+    Alert.alert('usersService.deleteAllChats', err.message);
+  }
+};
+
+export const deleteAllChats = async (fromUserId) => {
+  try {
+    const q = query(collection(database, 'users', fromUserId, 'chats'));
+    const snapshot = await getDocs(q);
+    snapshot.forEach((d) => deleteAllMessages(d.id));
+    snapshot.forEach((d) => deleteDoc(d.ref));
+  } catch (err) {
+    Alert.alert('usersService.deleteAllChats', err.message);
   }
 }

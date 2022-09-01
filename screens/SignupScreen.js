@@ -1,7 +1,8 @@
 // logic
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import * as usersService from 'services/users';
+import { useDispatch } from 'react-redux';
+import * as userReducer from 'reducers/user';
 
 // gui
 import { View, Image, StyleSheet, SafeAreaView, Text, TextInput, TouchableOpacity } from 'react-native';
@@ -11,6 +12,7 @@ import colors from 'utils/colors';
 const wallpaper = require('assets/wallpaper.jpg');
 
 export default function SignupScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState('dajimenezriv');
   const [email, setEmail] = useState('mail1@mail.com');
   const [password, setPassword] = useState('123456');
@@ -84,7 +86,7 @@ export default function SignupScreen({ navigation }) {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={() => usersService.signUp(email, password, username)}
+          onPress={() => dispatch(userReducer.signUp(email, password, username))}
         >
           <Text style={{
             fontWeight: 'bold',

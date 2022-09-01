@@ -10,8 +10,6 @@ export default function UserScreen({ route, navigation }) {
   const { userId } = route.params;
   const [user, setUser] = useState(null);
 
-  console.log(userId);
-
   useEffect(() => {
     setUser(null);
     const getUser = async () => { setUser(await usersService.getById(userId)); }
@@ -26,7 +24,10 @@ export default function UserScreen({ route, navigation }) {
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      <Button title={`Message ${user.username}`} />
+      <Button
+        title={`Message ${user.username}`}
+        onPress={() => navigation.navigate('Chat', { toUser: user })}
+      />
     </View>
   )
 }

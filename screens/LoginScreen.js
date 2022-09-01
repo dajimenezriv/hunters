@@ -1,7 +1,8 @@
 // logic
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import * as usersService from 'services/users';
+import { useDispatch } from 'react-redux';
+import * as userReducer from 'reducers/user';
 
 // gui
 import { View, Image, StyleSheet, SafeAreaView, Text, TextInput, TouchableOpacity } from 'react-native';
@@ -11,6 +12,7 @@ import colors from 'utils/colors';
 const wallpaper = require('assets/wallpaper.jpg');
 
 export default function LoginScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('mail1@mail.com');
   const [password, setPassword] = useState('123456');
 
@@ -74,7 +76,7 @@ export default function LoginScreen({ navigation }) {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={() => usersService.logIn(email, password)}
+          onPress={() => dispatch(userReducer.logIn(email, password))}
         >
           <Text style={{
             fontWeight: 'bold',
