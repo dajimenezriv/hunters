@@ -9,8 +9,12 @@ import { Alert } from 'react-native';
 
 const slice = createSlice({
   name: 'posts',
-  initialState: { posts: [] },
+  initialState: { refreshing: false, posts: [] },
   reducers: {
+    setRefreshing(state, { payload }) {
+      const refreshing = payload;
+      return { ...state, refreshing };
+    },
     setPosts(state, { payload }) {
       const posts = payload;
       return { ...state, posts };
@@ -26,16 +30,18 @@ const slice = createSlice({
   },
 });
 
-export const { setPosts, setPost } = slice.actions;
+export const { setRefreshing, setPosts, setPost } = slice.actions;
 export default slice.reducer;
 
 export const getAll = () => async (dispatch) => {
+  setRefreshing(true);
   try {
     const res = await postsService.getAll();
     dispatch(setPosts(res));
   } catch (err) {
     Alert.alert('postsReducer.getAll', err.message);
   }
+  setRefreshing(false);
 };
 
 export const add = (post) => async (dispatch) => {
@@ -44,14 +50,15 @@ export const add = (post) => async (dispatch) => {
     const newPost = {
       ...post,
       createdAt: new Date(),
-      userId: user.id,
       user: {
+        userId: user.id,
         username: user.username,
         avatarUri: user.avatarUri,
       },
       likes: [],
       comments: [],
     }
+
     await postsService.add(newPost);
     dispatch(getAll());
   } catch (err) {
@@ -68,11 +75,7 @@ export const like = (post) => async (dispatch) => {
     if (idx === -1) likes = [...post.likes, userId];
     else likes = post.likes.filter((uid) => uid !== userId);
 
-    dispatch(setPost({
-      ...post,
-      likes,
-    }));
-
+    dispatch(setPost({ ...post, likes }));
     await postsService.like(post.id, likes);
   } catch (err) {
     Alert.alert('postsRecucer.like', err.message);

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as postsReducer from 'reducers/posts';
 
 // gui
-import { View, FlatList, SafeAreaView } from 'react-native';
+import { View, FlatList, SafeAreaView, RefreshControl } from 'react-native';
 import colors from 'utils/colors';
 
 // components
@@ -13,11 +13,11 @@ import ImageFeed from 'components/feed/ImageFeed';
 
 export default function FeedScreen() {
   const dispatch = useDispatch();
-  const { posts } = useSelector((state) => state.posts);
+  const { refreshing, posts } = useSelector((state) => state.posts);
 
-  useEffect(() => {
-    dispatch(postsReducer.getAll());
-  }, []);
+  const refresh = () => { dispatch(postsReducer.getAll()); };
+
+  useEffect(() => { refresh(); }, []);
 
   return (
     <SafeAreaView>
@@ -39,6 +39,11 @@ export default function FeedScreen() {
           if (item.imageUri) return <ImageFeed post={item} />
           return <TextFeed post={item} />
         }}
+        refreshControl={<RefreshControl
+          colors={[colors.darkGray, colors.lightGray]}
+          refreshing={refreshing}
+          onRefresh={refresh}
+        />}
       />
     </SafeAreaView>
   )

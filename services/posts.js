@@ -6,28 +6,48 @@ import { database } from 'config/firebase';
 import { Alert } from 'react-native';
 
 export const getAll = async () => {
-  const res = [];
-  const q = query(collection(database, 'posts'), orderBy('createdAt', 'desc'));
-  const snapshot = await getDocs(q);
-  snapshot.forEach((d) => {
-    const data = d.data();
-    delete data.createdAt; // it's not serializble
-    res.push({ id: d.id, ...data, })
-  });
-  return res;
+  try {
+    const res = [];
+    const q = query(collection(database, 'posts'), orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    snapshot.forEach((d) => {
+      const data = d.data();
+      data.createdAt = data.createdAt.toDate().toISOString();
+      res.push({ id: d.id, ...data, })
+    });
+    return res;
+  } catch (err) {
+    Alert.alert('postsService.getChats', err.message);
+    return [];
+  }
 }
 
 export const getById = async (id) => {
-  const docRef = doc(database, 'posts', id);
-  const snapshot = await getDoc(docRef);
-  return { id: snapshot.id, ...snapshot.data() };
+  try {
+    const docRef = doc(database, 'posts', id);
+    const snapshot = await getDoc(docRef);
+    return { id: snapshot.id, ...snapshot.data() };
+  } catch (err) {
+    Alert.alert('postsService.getById', err.message);
+    return null;
+  }
 }
 
-export const add = async (post) => addDoc(collection(database, 'posts'), post);
+export const add = async (post) => {
+  try {
+    addDoc(collection(database, 'posts'), post);
+  } catch (err) {
+    Alert.alert('postsService.add', err.message);
+  }
+}
 
 export const like = async (id, likes) => {
-  const docRef = doc(database, 'posts', id);
-  await updateDoc(docRef, { likes });
+  try {
+    const docRef = doc(database, 'posts', id);
+    await updateDoc(docRef, { likes });
+  } catch (err) {
+    Alert.alert('postsService.like', err.message);
+  }
 };
 
 export const deleteAll = async () => {
@@ -39,6 +59,6 @@ export const deleteAll = async () => {
     snapshot.forEach((d) => deleteDoc(d.ref));
     // await batch.commit();
   } catch (err) {
-    Alert.alert('deleteAll', err.message);
+    Alert.alert('postsService.deleteAll', err.message);
   }
 }
