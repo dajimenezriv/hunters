@@ -36,6 +36,7 @@ module.exports = {
     'object-curly-newline': 'off',
     'no-use-before-define': 'off',
     'react/no-unstable-nested-components': 'off',
+    'react/require-default-props': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
