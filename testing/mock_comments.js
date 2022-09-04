@@ -7,7 +7,7 @@ const dajimenezrivId = 'PUgoiV6Mb1POIZPAhRFkcitqdsQ2';
 const martaId = 'Etwhd7KsaDR3ZFdBe924Vnt3DqB3';
 const javierId = 'UNIg9zbqb9VBTjXB1oIMjrfKUCi1';
 
-const createComments = async (dispatch, num, postsLimit) => {
+export const createComments = async (dispatch, num, postsLimit) => {
   const dajimenezriv = await usersService.getById(dajimenezrivId);
   const marta = await usersService.getById(martaId);
   const javier = await usersService.getById(javierId);

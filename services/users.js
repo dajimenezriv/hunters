@@ -86,3 +86,14 @@ export const deleteAllChats = async (fromUserId) => {
     Alert.alert('usersService.deleteAllChats', err.message);
   }
 }
+
+export const deleteAll = async () => {
+  try {
+    const q = query(collection(database, 'users'));
+    const snapshot = await getDocs(q);
+    snapshot.forEach((d) => deleteAllChats(d.id));
+    snapshot.forEach((d) => deleteDoc(d.ref));
+  } catch (err) {
+    Alert.alert('usersService.deleteAllChats', err.message);
+  }
+};

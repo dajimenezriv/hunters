@@ -44,7 +44,7 @@ const getRandomLikes = () => {
   return likes;
 };
 
-const createPosts = async (dispatch, num, postsLimit) => {
+export const createPosts = async (dispatch, num, postsLimit) => {
   const dajimenezriv = await usersService.getById(dajimenezrivId);
   const marta = await usersService.getById(martaId);
   const javier = await usersService.getById(javierId);
