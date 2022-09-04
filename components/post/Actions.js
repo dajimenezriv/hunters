@@ -1,7 +1,8 @@
 // logic
-import PropTypes from 'prop-types';
+import { postTypes } from 'utils/types';
 import { useDispatch } from 'react-redux';
 import * as postsReducer from 'reducers/posts';
+import { useNavigation } from '@react-navigation/native';
 
 // gui
 import { View, Image, Text, TouchableOpacity } from 'react-native';
@@ -12,6 +13,7 @@ const likesImage = require('assets/likes.png');
 const conversationImage = require('assets/conversation.png');
 
 export default function Actions({ post }) {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   return (
@@ -20,8 +22,7 @@ export default function Actions({ post }) {
       flexDirection: 'row',
       alignItems: 'center',
     }}>
-
-      {/* LIKES */}
+      {/* Likes */}
 
       <TouchableOpacity
         onPress={() => dispatch(postsReducer.like(post))}
@@ -42,10 +43,10 @@ export default function Actions({ post }) {
         }}>{post.likes.length} me gusta</Text>
       </TouchableOpacity>
 
-      {/* REPLIES */}
+      {/* Replies */}
 
       <TouchableOpacity
-        onPress={() => null}
+        onPress={() => navigation.navigate('Post', { post })}
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -62,22 +63,12 @@ export default function Actions({ post }) {
           fontWeight: 'bold',
           marginLeft: 5,
           marginRight: 25,
-        }}>{post.comments.length} comentarios</Text>
+        }}>{post.numComments} comentarios</Text>
       </TouchableOpacity>
     </View>
   )
 }
 
 Actions.propTypes = {
-  post: PropTypes.shape({
-    user: PropTypes.shape({
-      userId: PropTypes.string,
-      avatarUri: PropTypes.string,
-      username: PropTypes.string,
-    }),
-    imageUri: PropTypes.string,
-    description: PropTypes.string,
-    likes: PropTypes.arrayOf(PropTypes.string),
-    comments: PropTypes.arrayOf(PropTypes.any), // eslint-disable-line
-  }).isRequired,
+  post: postTypes,
 };

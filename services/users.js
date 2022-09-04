@@ -29,7 +29,7 @@ export const getChats = async (fromUserId) => {
     const res = [];
     const q = query(collection(database, 'users', fromUserId, 'chats'), orderBy('lastMessageAt', 'desc'));
     const snapshot = await getDocs(q);
-    snapshot.forEach((d) => { res.push({ id: d.id, ...d.data(), })});
+    snapshot.forEach((d) => { res.push({ id: d.id, ...d.data() })});
     return res;
   } catch (err) {
     Alert.alert('usersService.getChats', err.message);
@@ -42,7 +42,7 @@ export const getMessages = async (fromUserId, toUserId) => {
     const res = [];
     const q = query(collection(database, 'users', fromUserId, 'chats', toUserId, 'messages'), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
-    snapshot.forEach((d) => { res.push({ id: d.id, ...d.data(), })});
+    snapshot.forEach((d) => { res.push({ id: d.id, ...d.data() })});
     return res;
   } catch (err) {
     Alert.alert('usersService.getMessages', err.message);

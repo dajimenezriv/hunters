@@ -16,10 +16,7 @@ const createChats = async (dispatch) => {
     _id: 1,
     text: 'Hello',
     createdAt: new Date().toISOString(),
-    user: {
-      _id: martaId,
-      avatar: marta.avatarUri,
-    }
+    user: { _id: martaId, avatar: marta.avatarUri }
   });
 
   dispatch(userReducer.getChats());

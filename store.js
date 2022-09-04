@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import posts from './reducers/posts';
 import user from './reducers/user';
+import post from './reducers/post';
 
 const persistConfig = {
   key: 'root',
@@ -18,6 +19,7 @@ const store = configureStore({
   reducer: {
     posts: persistedPosts,
     user: persistedUser,
+    post,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

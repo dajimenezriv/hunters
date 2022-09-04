@@ -10,7 +10,7 @@ const javierId = 'UNIg9zbqb9VBTjXB1oIMjrfKUCi1';
 const userIds = [dajimenezrivId, martaId, javierId];
 
 const imagesUri = [
-  null, null,
+  // null, null,
   'https://firebasestorage.googleapis.com/v0/b/hunters-66bec.appspot.com/o/stag.png?alt=media&token=23177268-9207-4b09-b5b4-9aa39c2a3b84',
   'https://firebasestorage.googleapis.com/v0/b/hunters-66bec.appspot.com/o/stag2.jpg?alt=media&token=db7148e9-a842-4900-ad4e-dbca5db8e4a7',
 ]
@@ -44,15 +44,15 @@ const getRandomLikes = () => {
   return likes;
 };
 
-const createPosts = async (dispatch, num) => {
+const createPosts = async (dispatch, num, postsLimit) => {
   const dajimenezriv = await usersService.getById(dajimenezrivId);
   const marta = await usersService.getById(martaId);
   const javier = await usersService.getById(javierId);
 
   const users = [
-    { userId: dajimenezrivId, username: dajimenezriv.username, avatarUri: dajimenezriv.avatarUri },
-    { userId: martaId, username: marta.username, avatarUri: marta.avatarUri },
-    { userId: javierId, username: javier.username, avatarUri: javier.avatarUri },
+    { id: dajimenezrivId, username: dajimenezriv.username, avatarUri: dajimenezriv.avatarUri },
+    { id: martaId, username: marta.username, avatarUri: marta.avatarUri },
+    { id: javierId, username: javier.username, avatarUri: javier.avatarUri },
   ];
 
   await postsService.deleteAll();
@@ -66,9 +66,9 @@ const createPosts = async (dispatch, num) => {
         location: getRandomLocation(),
         description: 'Something.',
         imageUri: getRandomImageUri(),
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
         likes: getRandomLikes(),
-        comments: [],
+        numComments: 0,
       });
 
       counter -= 1;
@@ -78,7 +78,7 @@ const createPosts = async (dispatch, num) => {
 
   await promise;
 
-  dispatch(postsReducer.getAll());
+  dispatch(postsReducer.getAll({ postsLimit }));
 };
 
 export default createPosts;

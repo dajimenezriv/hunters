@@ -8,8 +8,8 @@ import { View, FlatList, SafeAreaView, RefreshControl } from 'react-native';
 import colors from 'utils/colors';
 
 // components
-import TextFeed from 'components/feed/TextFeed';
-import ImageFeed from 'components/feed/ImageFeed';
+import TextPost from 'components/post/TextPost';
+import ImagePost from 'components/post/ImagePost';
 
 export default function FeedScreen() {
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ export default function FeedScreen() {
       <FlatList
         style={{
           backgroundColor: 'white',
+          height: '100%',
         }}
         data={posts}
         keyExtractor={(post) => post.id}
@@ -36,8 +37,8 @@ export default function FeedScreen() {
           }} />
         )}
         renderItem={({ item }) => {
-          if (item.imageUri) return <ImageFeed post={item} />
-          return <TextFeed post={item} />
+          if (item.imageUri) return <ImagePost post={item} />
+          return <TextPost post={item} showComments={false} />
         }}
         refreshControl={<RefreshControl
           colors={[colors.darkGray, colors.lightGray]}

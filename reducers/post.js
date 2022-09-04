@@ -7,41 +7,39 @@ import { auth } from 'config/firebase';
 // gui
 import { Alert } from 'react-native';
 
-const postsLimit = 1;
-
 const slice = createSlice({
-  name: 'posts',
-  initialState: { refreshing: false, posts: [] },
+  name: 'post',
+  initialState: { refreshing: false, comments: [] },
   reducers: {
     setRefreshing(state, { payload }) {
       const refreshing = payload;
       return { ...state, refreshing };
     },
-    setPosts(state, { payload }) {
-      const posts = payload;
-      return { ...state, posts };
+    setComments(state, { payload }) {
+      const comments = payload;
+      return { ...state, comments };
     },
-    setPost(state, { payload }) {
-      const { posts } = state;
-      const newPost = payload;
+    setComment(state, { payload }) {
+      const { comments } = state;
+      const newComment = payload;
       return {
         ...state,
-        posts: posts.map((post) => (post.id === newPost.id) ? newPost : post),
+        posts: comments.map((post) => (post.id === newComment.id) ? newComment : post),
       }
     }
   },
 });
 
-export const { setRefreshing, setPosts, setPost } = slice.actions;
+export const { setRefreshing, setComments, setComment } = slice.actions;
 export default slice.reducer;
 
-export const getAll = () => async (dispatch) => {
+export const getAllComments = (postId) => async (dispatch) => {
   setRefreshing(true);
   try {
-    const posts = await postsService.getAll({ postsLimit });
-    dispatch(setPosts(posts));
+    const comments = await postsService.getAllComments(postId);
+    dispatch(setComments(comments));
   } catch (err) {
-    Alert.alert('postsReducer.getAll', err.message);
+    Alert.alert('postReducer.getAllComments', err.message);
   }
   setRefreshing(false);
 };
@@ -58,17 +56,17 @@ export const add = (post) => async (dispatch) => {
         avatarUri: user.avatarUri,
       },
       likes: [],
-      numComments: 0,
+      comments: [],
     }
 
     await postsService.add(newPost);
-    dispatch(getAll());
+    dispatch(getAllComments());
   } catch (err) {
     Alert.alert('postsReducer.add', err.message);
   }
 };
 
-export const like = (post) => async (dispatch) => {
+export const likeComment = (post) => async (dispatch) => {
   try {
     let likes = [];
     const userId = auth.currentUser.uid;
@@ -77,9 +75,9 @@ export const like = (post) => async (dispatch) => {
     if (idx === -1) likes = [...post.likes, userId];
     else likes = post.likes.filter((uid) => uid !== userId);
 
-    dispatch(setPost({ ...post, likes }));
+    dispatch(setComment({ ...post, likes }));
     await postsService.like(post.id, likes);
   } catch (err) {
-    Alert.alert('postsRecucer.like', err.message);
+    Alert.alert('postRecucer.likeComment', err.message);
   }
 }

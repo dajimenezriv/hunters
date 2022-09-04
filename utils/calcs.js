@@ -23,10 +23,10 @@ console.log(getDiff(date5, date0));
 
 export const getDiff = (startDate, endDate) => {
   let res = endDate - startDate; // milliseconds
-  res /= 1000; if (res < 60) return `${Math.trunc(res)} seconds`;
-  res /= 60; if (res < 60) return `${Math.trunc(res)} minutes`;
-  res /= 60; if (res < 24) return `${Math.trunc(res)} hours`;
-  return `${Math.trunc(res / 24)} days`;
+  res /= 1000; if (res < 60) return `${Math.trunc(res)} seconds ago`;
+  res /= 60; if (res < 60) return `${Math.trunc(res)} minutes ago`;
+  res /= 60; if (res < 24) return `${Math.trunc(res)} hours ago`;
+  return `${Math.trunc(res / 24)} days ago`;
 };
 
 export default getDiff;
