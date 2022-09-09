@@ -2,12 +2,7 @@
 import * as usersService from 'services/users';
 import * as postsService from 'services/posts';
 import * as postsReducer from 'reducers/posts';
-
-const dajimenezrivId = 'PUgoiV6Mb1POIZPAhRFkcitqdsQ2';
-const martaId = 'Etwhd7KsaDR3ZFdBe924Vnt3DqB3';
-const javierId = 'UNIg9zbqb9VBTjXB1oIMjrfKUCi1';
-
-const userIds = [dajimenezrivId, martaId, javierId];
+import * as helper from './helper';
 
 const imagesUri = [
   // null, null,
@@ -22,52 +17,29 @@ const initialRegion = {
   longitudeDelta: 8.5,
 };
 
-const rand = (max) => Math.floor(Math.random() * max);
+const getRandomImageUri = () => imagesUri[helper.rand(imagesUri.length)];
 
-const getRandomUser = (users) => users[rand(users.length)];
-const getRandomImageUri = () => imagesUri[rand(imagesUri.length)];
-
-const getRandomLocation = () => {
-  const { latitude, longitude, latitudeDelta, longitudeDelta } = initialRegion;
-  return {
-    latitude: latitude + (Math.random() - 0.5) * latitudeDelta,
-    longitude: longitude + (Math.random() - 0.5) * longitudeDelta
-  }
-}
-
-const getRandomLikes = () => {
-  const likes = [];
-  Array(rand(userIds.length)).fill().forEach(() => {
-    const userId = userIds[rand(userIds.length)];
-    if (!likes.includes(userId)) likes.push(userId);
-  })
-  return likes;
-};
-
-export const createPosts = async (dispatch, num, postsLimit) => {
-  const dajimenezriv = await usersService.getById(dajimenezrivId);
-  const marta = await usersService.getById(martaId);
-  const javier = await usersService.getById(javierId);
+export const createPosts = async (num) => {
+  const dajimenezriv = await usersService.getById(helper.dajimenezrivId);
+  const marta = await usersService.getById(helper.martaId);
+  const javier = await usersService.getById(helper.javierId);
 
   const users = [
-    { id: dajimenezrivId, username: dajimenezriv.username, avatarUri: dajimenezriv.avatarUri },
-    { id: martaId, username: marta.username, avatarUri: marta.avatarUri },
-    { id: javierId, username: javier.username, avatarUri: javier.avatarUri },
+    { id: dajimenezriv.id, username: dajimenezriv.username, avatarUri: dajimenezriv.avatarUri },
+    { id: marta.id, username: marta.username, avatarUri: marta.avatarUri },
+    { id: javier.id, username: javier.username, avatarUri: javier.avatarUri },
   ];
-
-  await postsService.deleteAll();
 
   const promise = new Promise((resolve, reject) => {
     let counter = num;
     Array(num).fill().map(async () => {
-      getRandomLikes();
       await postsService.add({
-        user: getRandomUser(users),
-        location: getRandomLocation(),
-        description: 'Something.',
+        user: helper.getRandomUser(users),
+        location: helper.getRandomLocation(initialRegion),
+        description: helper.getRandomText(helper.rand(100)),
         imageUri: getRandomImageUri(),
         createdAt: new Date().toISOString(),
-        likes: getRandomLikes(),
+        likes: helper.getRandomLikes(),
         numComments: 0,
       });
 
@@ -77,8 +49,6 @@ export const createPosts = async (dispatch, num, postsLimit) => {
   });
 
   await promise;
-
-  dispatch(postsReducer.getAll({ postsLimit }));
 };
 
 export default createPosts;

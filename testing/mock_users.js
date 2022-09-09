@@ -1,9 +1,6 @@
 import * as userReducer from 'reducers/user';
 import * as usersService from 'services/users';
-
-const dajimenezrivId = 'PUgoiV6Mb1POIZPAhRFkcitqdsQ2';
-const martaId = 'Etwhd7KsaDR3ZFdBe924Vnt3DqB3';
-const javierId = 'UNIg9zbqb9VBTjXB1oIMjrfKUCi1';
+import * as helper from './helper';
 
 const dajimenezriv = {
   username: 'dajimenezriv',
@@ -30,13 +27,11 @@ const javier = {
 };
 
 export const createUsers = async (dispatch) => {
-  await usersService.deleteAll();
+  await usersService.add(helper.dajimenezrivId, dajimenezriv);
+  await usersService.add(helper.martaId, marta);
+  await usersService.add(helper.javierId, javier);
 
-  await usersService.add(dajimenezrivId, dajimenezriv);
-  await usersService.add(martaId, marta);
-  await usersService.add(javierId, javier);
-
-  dispatch(userReducer.setUser({ id: dajimenezrivId, ...dajimenezriv }))
+  dispatch(userReducer.setUser({ ...dajimenezriv }));
 };
 
 export default createUsers;

@@ -1,31 +1,75 @@
 // logic
 import * as usersService from 'services/users';
 import * as postsService from 'services/posts';
-import * as postsReducer from 'reducers/posts';
+import * as helper from './helper';
 
-const dajimenezrivId = 'PUgoiV6Mb1POIZPAhRFkcitqdsQ2';
-const martaId = 'Etwhd7KsaDR3ZFdBe924Vnt3DqB3';
-const javierId = 'UNIg9zbqb9VBTjXB1oIMjrfKUCi1';
+export const createComments = async (num) => {
+  const dajimenezriv = await usersService.getById(helper.dajimenezrivId);
+  const marta = await usersService.getById(helper.martaId);
+  const javier = await usersService.getById(helper.javierId);
 
-export const createComments = async (dispatch, num, postsLimit) => {
-  const dajimenezriv = await usersService.getById(dajimenezrivId);
-  const marta = await usersService.getById(martaId);
-  const javier = await usersService.getById(javierId);
+  const users = [
+    { id: dajimenezriv.id, username: dajimenezriv.username, avatarUri: dajimenezriv.avatarUri },
+    { id: marta.id, username: marta.username, avatarUri: marta.avatarUri },
+    { id: javier.id, username: javier.username, avatarUri: javier.avatarUri },
+  ];
 
-  const post = (await postsService.getAll({ postLimit: 1 }))[0];
-  
-  await postsService.addComment(post, {
-    text: 'First comment',
-    likes: [],
-    createdAt: new Date().toISOString(),
-    user: {
-      id: dajimenezrivId,
-      username: dajimenezriv.username,
-      avatarUri: dajimenezriv.avatarUri,
-    }
+  const post = (await postsService.getAll({ qLimit: 1 }))[0];
+
+  const promise = new Promise((resolve, reject) => {
+    let counter = num;
+    Array(num).fill().map(async () => {
+      await postsService.addComment({
+        post,
+        comment: {
+          user: helper.getRandomUser(users),
+          text: helper.getRandomText(helper.rand(100)),
+          likes: helper.getRandomLikes(),
+          createdAt: new Date().toISOString(),
+          numReplies: 0,
+        },
+      });
+
+      counter -= 1;
+      if (counter === 0) resolve();
+    })
   });
 
-  dispatch(postsReducer.getAll({ postsLimit }));
+  await promise;
 };
 
-export default createComments;
+export const createReplies = async (num) => {
+  const dajimenezriv = await usersService.getById(helper.dajimenezrivId);
+  const marta = await usersService.getById(helper.martaId);
+  const javier = await usersService.getById(helper.javierId);
+
+  const users = [
+    { id: dajimenezriv.id, username: dajimenezriv.username, avatarUri: dajimenezriv.avatarUri },
+    { id: marta.id, username: marta.username, avatarUri: marta.avatarUri },
+    { id: javier.id, username: javier.username, avatarUri: javier.avatarUri },
+  ];
+
+  const post = (await postsService.getAll({ qLimit: 1 }))[0];
+  const comment = (await postsService.getAllComments({ post, qLimit: 1 }))[0];
+
+  const promise = new Promise((resolve, reject) => {
+    let counter = num;
+    Array(num).fill().map(async () => {
+      await postsService.addReply({
+        post,
+        comment,
+        reply: {
+          user: helper.getRandomUser(users),
+          text: helper.getRandomText(helper.rand(100)),
+          likes: helper.getRandomLikes(),
+          createdAt: new Date().toISOString(),
+        },
+      });
+
+      counter -= 1;
+      if (counter === 0) resolve();
+    })
+  });
+
+  await promise;
+};
