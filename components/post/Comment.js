@@ -14,7 +14,7 @@ export default function Comment({ comment }) {
   return (
     <View style={{
       flexDirection: 'row',
-      marginBottom: 5,
+      marginBottom: 15,
     }}>
       {/* avatar */}
 
@@ -26,7 +26,6 @@ export default function Comment({ comment }) {
         flex: 1,
         marginLeft: 10,
         flexDirection: 'row',
-        alignItems: 'center',
       }}>
         <View style={{
           flex: 1,
@@ -71,9 +70,10 @@ export default function Comment({ comment }) {
         {/* like */}
 
         <TouchableOpacity style={{
+          marginTop: 8,
           marginHorizontal: 10,
         }}>
-          <Icon name="heart" size={15} color={colors.lightGray} />
+          <Icon name="heart" size={13} color={colors.lightGray} />
         </TouchableOpacity>
       </View>
     </View>

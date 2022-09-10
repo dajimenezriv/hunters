@@ -29,6 +29,7 @@ export default function TextPost({ post, showComments }) {
 
         <View style={{
           flexDirection: 'column',
+          marginLeft: 10,
         }}>
           <View style={{
             flexDirection: 'row',
