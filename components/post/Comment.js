@@ -3,7 +3,8 @@ import { commentTypes } from 'utils/types';
 import { getDiff } from 'utils/calcs';
 
 // gui
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import colors from 'utils/colors';
 
 // components
@@ -12,40 +13,68 @@ import Avatar from './Avatar';
 export default function Comment({ comment }) {
   return (
     <View style={{
-      padding: 5,
       flexDirection: 'row',
+      marginBottom: 5,
     }}>
+      {/* avatar */}
+
       <Avatar user={comment.user} />
 
+      {/* info and like */}
+
       <View style={{
-        flexDirection: 'column',
+        flex: 1,
+        marginLeft: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
       }}>
         <View style={{
-          flexDirection: 'row',
+          flex: 1,
+          marginRight: 10,
+          flexDirection: 'column',
         }}>
-          <Text style={{
-            fontWeight: 'bold',
-            marginRight: 5,
-          }}>{comment.user.username}</Text>
-          <Text>{comment.text}</Text>
-        </View>
+          {/* username and text */}
 
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: 3,
-        }}>
-          <Text style={{
-            color: colors.lightGray,
-            fontSize: 10,
-          }}>{getDiff(new Date(comment.createdAt), new Date())}</Text>
+          <View style={{
+            flexDirection: 'row',
+          }}>
+            <Text>
+              <Text style={{
+                fontWeight: 'bold',
+              }}>{comment.user.username}</Text>
+              {' '}
+              {comment.text}
+            </Text>
+          </View>
 
-          {(comment.likes.length !== 0) ? (
+          {/* date and number of likes */}
+
+          <View style={{
+            flexDirection: 'row',
+            marginTop: 3,
+          }}>
             <Text style={{
+              fontSize: 10,
               color: colors.lightGray,
-            }}>{comment.likes.length} likes</Text>
-          ) : null}
+            }}>{getDiff(new Date(comment.createdAt), new Date())}</Text>
+
+            {(comment.likes.length !== 0) ? (
+              <Text style={{
+                color: colors.lightGray,
+                fontSize: 10,
+                marginLeft: 30,
+              }}>{comment.likes.length} likes</Text>
+            ) : null}
+          </View>
         </View>
+
+        {/* like */}
+
+        <TouchableOpacity style={{
+          marginHorizontal: 10,
+        }}>
+          <Icon name="heart" size={15} color={colors.lightGray} />
+        </TouchableOpacity>
       </View>
     </View>
   )
