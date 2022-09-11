@@ -8,7 +8,6 @@ import post from './reducers/post';
 
 const persistConfig = {
   key: 'root',
-  version: 1,
   storage: AsyncStorage,
 }
 

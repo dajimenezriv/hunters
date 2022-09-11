@@ -1,6 +1,7 @@
 // logic
 import { createSlice } from '@reduxjs/toolkit';
 import * as usersService from 'services/users';
+import * as postsService from 'services/posts';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { auth } from 'config/firebase';
@@ -17,6 +18,7 @@ const slice = createSlice({
     user: null,
     chats: [],
     messages: [],
+    posts: [],
   },
   reducers: {
     setRefreshing(state, { payload }) {
@@ -34,11 +36,15 @@ const slice = createSlice({
     setMessages(state, { payload }) {
       const messages = payload;
       return { ...state, messages };
-    }
+    },
+    setPosts(state, { payload }) {
+      const posts = payload;
+      return { ...state, posts };
+    },
   },
 });
 
-export const { setRefreshing, setUser, setChats, setMessages } = slice.actions;
+export const { setRefreshing, setUser, setChats, setMessages, setPosts } = slice.actions;
 export default slice.reducer;
 
 export const signUp = (email, password, username) => async (dispatch) => {
@@ -47,7 +53,7 @@ export const signUp = (email, password, username) => async (dispatch) => {
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
       const userDetails = { username, avatarUri: defaultProfileUri };
       await usersService.add(user.uid, userDetails);
-      dispatch(setUser(userDetails));
+      dispatch(setUser({ id: user.uid, ...userDetails }));
     }
   } catch (err) {
     Alert.alert('userReducer.signUp', err.message);
@@ -116,4 +122,16 @@ export const sendMessage = (toUser, message) => async (dispatch, getState) => {
   } catch (err) {
     Alert.alert('userReducer.sendMessage', err.message);
   }
+};
+
+export const getPosts = () => async (dispatch, getState) => {
+  setRefreshing(true);
+  try {
+    const { user } = getState().user;
+    const posts = await postsService.getAll({ postsLimit: 1, userId: user.id });
+    dispatch(setPosts(posts));
+  } catch (err) {
+    Alert.alert('userReducer.getPosts', err.message);
+  }
+  setRefreshing(false);
 };

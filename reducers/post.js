@@ -33,10 +33,10 @@ const slice = createSlice({
 export const { setRefreshing, setComments, setComment } = slice.actions;
 export default slice.reducer;
 
-export const getAllComments = (postId) => async (dispatch) => {
+export const getAllComments = (post) => async (dispatch) => {
   setRefreshing(true);
   try {
-    const comments = await postsService.getAllComments(postId);
+    const comments = await postsService.getAllComments({ post });
     dispatch(setComments(comments));
   } catch (err) {
     Alert.alert('postReducer.getAllComments', err.message);

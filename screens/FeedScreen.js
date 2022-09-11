@@ -28,7 +28,7 @@ export default function FeedScreen() {
         }}
         data={posts}
         keyExtractor={(post) => post.id}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 70 }}
         ItemSeparatorComponent={() => (
           <View style={{
             backgroundColor: colors.darkWhite,

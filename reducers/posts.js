@@ -1,13 +1,11 @@
 // logic
 import { createSlice } from '@reduxjs/toolkit';
 import * as postsService from 'services/posts';
-import * as usersService from 'services/users';
-import { auth } from 'config/firebase';
 
 // gui
 import { Alert } from 'react-native';
 
-const postsLimit = 1;
+const qLimit = 1;
 
 const slice = createSlice({
   name: 'posts',
@@ -38,7 +36,7 @@ export default slice.reducer;
 export const getAll = () => async (dispatch) => {
   setRefreshing(true);
   try {
-    const posts = await postsService.getAll({ postsLimit });
+    const posts = await postsService.getAll({ qLimit });
     dispatch(setPosts(posts));
   } catch (err) {
     Alert.alert('postsReducer.getAll', err.message);
@@ -46,39 +44,43 @@ export const getAll = () => async (dispatch) => {
   setRefreshing(false);
 };
 
-export const add = (post) => async (dispatch) => {
+export const add = (post) => async (dispatch, getState) => {
   try {
-    const user = await usersService.getById(auth.currentUser.uid);
+    const { user } = getState().user;
     const newPost = {
-      ...post,
-      createdAt: new Date(),
       user: {
         userId: user.id,
         username: user.username,
         avatarUri: user.avatarUri,
       },
+      ...post,
+      createdAt: new Date(),
       likes: [],
       numComments: 0,
     }
 
-    await postsService.add(newPost);
+    await postsService.add({ post: newPost });
     dispatch(getAll());
   } catch (err) {
     Alert.alert('postsReducer.add', err.message);
   }
 };
 
-export const like = (post) => async (dispatch) => {
+export const like = (post) => async (dispatch, getState) => {
   try {
+    const { user } = getState().user;
     let likes = [];
-    const userId = auth.currentUser.uid;
-    const idx = post.likes.indexOf(userId);
+    const idx = post.likes.indexOf(user.id);
 
-    if (idx === -1) likes = [...post.likes, userId];
-    else likes = post.likes.filter((uid) => uid !== userId);
-
-    dispatch(setPost({ ...post, likes }));
-    await postsService.like(post.id, likes);
+    if (idx === -1) {
+      likes = [...post.likes, user.id];
+      dispatch(setPost({ ...post, likes }));
+      await postsService.like({ post, user });
+    } else {
+      likes = post.likes.filter((uid) => uid !== user.id);
+      dispatch(setPost({ ...post, likes }));
+      await postsService.removeLike({ post, user });
+    }
   } catch (err) {
     Alert.alert('postsRecucer.like', err.message);
   }

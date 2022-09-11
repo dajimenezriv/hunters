@@ -52,25 +52,20 @@ export default function Tabs() {
         tabBarShowLabel: false,
         tabBarStyle: {
           position: 'absolute',
-          bottom: 10,
-          left: 10,
-          right: 10,
           backgroundColor: '#fff',
-          borderRadius: 15,
-          height: 90,
-          shadowColor: colors.darkGray,
-          shadowOffset: {
-            width: 0,
-            height: 10,
-          },
-          shadowOpacity: 0.9,
-          shadowRadius: 3.5,
-          elevation: 5,
+          height: 70,
         }
       }}
     >
+      
+
       <Tab.Screen name="Feed" component={FeedScreen} options={{
         tabBarIcon: () => tabBarIcon(feedImage),
+        headerRight: () => headerRight(),
+      }} />
+
+<Tab.Screen name="Profile" component={ProfileScreen} options={{
+        tabBarIcon: () => tabBarIcon(profileImage),
         headerRight: () => headerRight(),
       }} />
 
@@ -91,18 +86,13 @@ export default function Tabs() {
         headerRight: () => headerRight(),
       }} />
 
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{
-        tabBarIcon: () => tabBarIcon(profileImage),
-        headerRight: () => headerRight(),
+      <Tab.Screen name="User" component={UserScreen} options={{
+        tabBarButton: () => null,
       }} />
 
       <Tab.Screen name="Post" component={PostScreen} options={{
         tabBarButton: () => null,
         tabBarStyle: { display: 'none' },
-      }} />
-
-      <Tab.Screen name="User" component={UserScreen} options={{
-        tabBarButton: () => null,
       }} />
 
       <Tab.Screen name="Chat" component={ChatScreen} options={{
