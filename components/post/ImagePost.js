@@ -27,6 +27,7 @@ export default function ImagePost({ post }) {
         <Avatar user={post.user} />
 
         <Text style={{
+          marginLeft: 10,
           fontWeight: 'bold',
         }}>{post.user.username}</Text>
 
@@ -56,11 +57,13 @@ export default function ImagePost({ post }) {
           flexDirection: 'row',
           width: '100%',
         }}>
-          <Text style={{
-            fontWeight: 'bold',
-          }}>{post.user.username}</Text>
-
-          <Text> {description}</Text>
+          <Text>
+            <Text style={{
+              fontWeight: 'bold',
+            }}>{post.user.username}</Text>
+            {' '}
+            {description}
+          </Text>
         </View>
 
         <Actions post={post} />

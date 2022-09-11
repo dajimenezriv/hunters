@@ -9,6 +9,7 @@ import colors from 'utils/colors';
 
 // components
 import Avatar from './Avatar';
+import Replies from './Replies';
 
 export default function Comment({ comment }) {
   return (
@@ -64,7 +65,19 @@ export default function Comment({ comment }) {
                 marginLeft: 30,
               }}>{comment.likes.length} likes</Text>
             ) : null}
+
+            <TouchableOpacity>
+              <Text style={{
+                fontSize: 10,
+                color: 'gray',
+                marginLeft: 30,
+              }}>Reply</Text>
+            </TouchableOpacity>
           </View>
+
+          {/* replies */}
+
+          <Replies comment={comment} />
         </View>
 
         {/* like */}

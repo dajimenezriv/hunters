@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 // gui
 import { TextInput } from 'react-native';
+import colors from 'utils/colors';
 
 export default function NewComment({ showComments }) {
   const dispatch = useDispatch(); // eslint-disable-line
@@ -18,13 +19,10 @@ export default function NewComment({ showComments }) {
       value={newComment}
       placeholder="Write comment"
       style={{
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: 'black',
         width: '100%',
         padding: 10,
         borderTopWidth: 1,
-        borderColor: '#ddd',
+        borderColor: colors.darkWhite,
       }}
     />
   );
